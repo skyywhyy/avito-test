@@ -1,0 +1,117 @@
+.ad-card {
+    position: relative;
+    width: 200px;
+    height: 268px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    background: #fff;
+    transition: box-shadow 0.2s ease;
+}
+
+.ad-card--list {
+    width: 100%;
+    height: 132px;
+    flex-direction: row;
+}
+
+.ad-card__image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    color: #d9d9d9;
+    background: #f8f8f8;
+}
+
+.ad-card__image-placeholder img {
+    object-fit: contain;
+}
+
+.ad-card--list .ad-card__image-placeholder {
+    width: 179px;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.ad-card__content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+}
+
+.ad-card--list .ad-card__content {
+    justify-content: center;
+    gap: 4px;
+}
+
+.ad-card__category {
+    position: absolute;
+    top: 140px;
+    padding: 0 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #FFFFFF;
+    color: #666;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.ad-card--list .ad-card__category {
+    position: static;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.ad-card__title {
+    overflow: hidden;
+    margin: 0;
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ad-card--list .ad-card__title {
+    font-size: 16px;
+}
+
+.ad-card__price {
+    margin: 0;
+    color: rgba(0,0,0,.45);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ad-card__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    margin-top: auto;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #ff9800;
+    background: #fff8f0;
+}
+
+.ad-card--list .ad-card__badge {
+    margin-top: 0;
+}
+
+.ad-card__badge-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+}

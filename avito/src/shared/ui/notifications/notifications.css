@@ -1,0 +1,37 @@
+.notifications__toast {
+    position: fixed;
+    right: 24px;
+    top: 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 320px;
+    max-width: 420px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+    color: #1e1e1e;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.notifications__toast--success {
+    background: #e7f8ee;
+    border: 1px solid #bce8cb;
+}
+
+.notifications__toast--error {
+    background: #fee9e7;
+    border: 1px solid #fcb3ad;
+}
+
+.notifications__close {
+    margin-left: auto;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
