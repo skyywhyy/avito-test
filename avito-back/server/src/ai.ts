@@ -1,4 +1,4 @@
-import { AI_API_CONFIG } from './constants.ts';
+import { getAiApiConfig } from './constants.ts';
 import type {
   AiItemInput,
   EstimatePriceResponse,
@@ -17,13 +17,15 @@ type ModelResponse = {
 };
 
 const ensureAiEndpointConfig = (path: string): string => {
-  if (!AI_API_CONFIG.baseUrl || !AI_API_CONFIG.apiKey || !AI_API_CONFIG.model || !path) {
+  const config = getAiApiConfig();
+
+  if (!config.baseUrl || !config.apiKey || !config.model || !path) {
     throw new AiConfigurationError(
       'AI API is not configured. Set AI_API_BASE_URL, AI_API_KEY, AI_MODEL and endpoint paths.',
     );
   }
 
-  return new URL(path, AI_API_CONFIG.baseUrl).toString();
+  return new URL(path, config.baseUrl).toString();
 };
 
 const stringifyItemPayload = (payload: AiItemInput): string =>
@@ -89,12 +91,13 @@ const callModel = async (
   systemPrompt: string,
   userPrompt: string,
 ): Promise<string> => {
+  const config = getAiApiConfig();
   const url = ensureAiEndpointConfig(path);
   const isChatCompletionsEndpoint = /\/chat\/completions\/?$/i.test(path);
 
   const body = isChatCompletionsEndpoint
     ? {
-        model: AI_API_CONFIG.model,
+        model: config.model,
         temperature: 0.2,
         messages: [
           {
@@ -108,7 +111,7 @@ const callModel = async (
         ],
       }
     : {
-        model: AI_API_CONFIG.model,
+        model: config.model,
         temperature: 0.2,
         prompt: `${systemPrompt}\n\n${userPrompt}`,
       };
@@ -117,7 +120,7 @@ const callModel = async (
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${AI_API_CONFIG.apiKey}`,
+      authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify(body),
   });
@@ -134,7 +137,7 @@ export const generateDescription = async (
   payload: AiItemInput,
 ): Promise<GenerateDescriptionResponse> => {
   const description = await callModel(
-    AI_API_CONFIG.generateDescriptionPath,
+    getAiApiConfig().generateDescriptionPath,
     'You are a professional marketplace copywriter. Answer like "Продаю свой MacBook Pro 16\" (2021) на чипе M1 Pro..." and keep the tone concise, professional, slightly more refined than a typical listing.',
     `Write 2 short paragraphs in Russian for this listing. Be factual, concise and slightly more professional than a typical user listing. Use only the provided details. No markdown, no bullets.\n\n${stringifyItemPayload(
       payload,
@@ -150,7 +153,7 @@ export const estimatePrice = async (
   payload: AiItemInput,
 ): Promise<EstimatePriceResponse> => {
   const rawResponse = await callModel(
-    AI_API_CONFIG.estimatePricePath,
+    getAiApiConfig().estimatePricePath,
     'You are a marketplace pricing analyst. Reasoning should look like: "Средняя цена ...", "От ...", "90 000 – ..." and stay professional. Return valid JSON only.',
     `Estimate a fair listing price in RUB for this item. Return JSON only with keys "price" and optional "reasoning". Make the reasoning short and professional and include a few candidate ranges similar to:\nСредняя цена на MacBook Pro 16" ...\n115 000 – 135 000 ₽ — отличное состояние.\nОт 140 000 ₽ — идеал, малый износ АКБ.\n90 000 – 110 000 ₽ — срочно или с дефектами нужно чтобы по цене он отдавал.\n\n${stringifyItemPayload(
       payload,

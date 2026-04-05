@@ -1,6 +1,8 @@
 ﻿import Fastify from 'fastify';
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 import items from 'data/items.json' with {type: 'json'};
 import {Item} from 'src/types.ts';
@@ -13,6 +15,14 @@ import {
     generateDescription,
     isAiConfigurationError,
 } from './src/ai.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({
+    path: path.resolve(__dirname, '.env'),
+    quiet: true,
+});
 
 const ITEMS = items as Item[];
 
